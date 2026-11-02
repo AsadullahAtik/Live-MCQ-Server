@@ -1,0 +1,38 @@
+# চালানো:  docker compose up --build
+# বন্ধ:     docker compose down        (ডেটা থাকে)   |   docker compose down -v   (ডেটাসহ মুছে)
+# পাসওয়ার্ড/JWT গোপন কথা বদলাতে: একই ফোল্ডারে .env ফাইল বানিয়ে DB_PASSWORD=... ও JWT_SECRET=... দিন
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: livemcq
+      POSTGRES_USER: livemcq
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-livemcq}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U livemcq -d livemcq"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  server:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy   # ডাটাবেস তৈরি না হওয়া পর্যন্ত সার্ভার শুরু হয় না
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/livemcq
+      SPRING_DATASOURCE_USERNAME: livemcq
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-livemcq}
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-key-to-at-least-32-chars-long}
+      # আসল ব্যবহারে ডেমো অ্যাকাউন্ট নেই; admin-এর পাসওয়ার্ড ও (ঐচ্ছিক) নিবন্ধন কোড .env থেকে
+      APP_SEED_DEMO: ${APP_SEED_DEMO:-false}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?.env ফাইলে ADMIN_PASSWORD দিন (কমপক্ষে ৬ অক্ষর)}
+      REGISTRATION_CODE: ${REGISTRATION_CODE:-}
+
+volumes:
+  pgdata:

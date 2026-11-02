@@ -1,0 +1,73 @@
+﻿Live MCQ test report — 2026-11-01 15:29:36
+ফোল্ডার: E:\live-mcq-server
+--- পরিবেশ ---
+java.exe : java version "26.0.2.1" 2026-08-18
+At E:\live-mcq-server\tools\windows\smoke-test.ps1:16 char:13
++ try { $j = (& java -version 2>&1 | Out-String).Trim(); Say $j } catch ...
++             ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (java version "26.0.2.1" 2026-08-18:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Java(TM) SE Runtime Environment (build 26.0.2.1+1-7)
+Java HotSpot(TM) 64-Bit Server VM (build 26.0.2.1+1-7, mixed mode, sharing)
+Apache Maven 3.10.0 (c43a36b8d67be7e0805a411bc0898af1a51f5472)
+Maven home: D:\apache-maven-3.10.0
+Java version: 26.0.2.1, vendor: Oracle Corporation, runtime: D:\Java
+
+=== ১. mvn test ===
+mvn test: PASS
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.042 s -- in com.livemcq.core.CoreTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.586 s -- in com.livemcq.it.ApiIntegrationTest
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.751 s -- in com.livemcq.it.LiveWebSocketTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.588 s -- in com.livemcq.service.ServiceFlowTest
+[INFO] Tests run: 32, Failures: 0, Errors: 0, Skipped: 0
+
+=== ২. সার্ভার চালু (মেমরির H2, ডেমো ডেটাসহ) ===
+সার্ভার চালু: PASS
+
+=== ৩. Student / Teacher / Admin যাত্রা (আসল HTTP) ===
+  PASS  health খোলা
+  PASS  টোকেন ছাড়া ৪০১
+  PASS  Admin লগইন
+  PASS  Teacher লগইন
+  PASS  Student লগইন
+  PASS  ভুল পাসওয়ার্ডে ৪০১
+  PASS  Admin: শ্রেণির তালিকা
+  PASS  Admin: নবম শ্রেণির পরীক্ষা তৈরি
+  PASS  Admin: দশম শ্রেণির পরীক্ষা তৈরি
+  PASS  Admin: নাম ছাড়া পরীক্ষা ৪০০
+  PASS  Teacher: নিজের শ্রেণির পরীক্ষা দেখে
+  PASS  Teacher: অন্য শ্রেণির পরীক্ষা দেখে না
+  PASS  Teacher: অন্য শ্রেণির পরীক্ষা খুললে ৪০৩
+  PASS  Teacher: অন্য শ্রেণিতে পরীক্ষা বানালে ৪০৩
+  PASS  Teacher: শিক্ষক-তালিকা Admin-এর, ৪০৩
+  PASS  Student: Admin API-তে ৪০৩
+  PASS  Student: অন্য শ্রেণির পরীক্ষা শুরুতে ৪০৩
+  PASS  Student: নিজের পরীক্ষা তালিকায় (open)
+  PASS  Student: পরীক্ষা শুরু
+  PASS  Student: সঠিক অপশন পর্দায় আছে
+  PASS  Student: অটোসেভ
+  PASS  Student: আবার শুরুতে একই attempt ও উত্তর ফেরত
+  PASS  Student: জমা
+  PASS  Student: দ্বিতীয়বার জমা নিরাপদ
+  PASS  Student: প্রকাশের আগে ফলাফল ৪০৩
+  PASS  Student: জমার পর আবার শুরু ৪০৯
+  PASS  Admin: লাইভ বোর্ডে ছাত্র দেখা যায়
+  PASS  Teacher: বোর্ড দেখতে পারে
+  PASS  Admin: প্রকাশ
+  PASS  Student: ফলাফল ৫/৫ সঠিক, র‍্যাংক ১
+  PASS  Student: র‍্যাংক তালিকা
+  PASS  নিবন্ধন (ছাত্র)
+  PASS  একই রোলে নিবন্ধন ৪০৯
+  PASS  পাসওয়ার্ড বদল: ভুল পুরনো ৪০০
+  PASS  পাসওয়ার্ড বদল
+  PASS  নতুন পাসওয়ার্ডে লগইন
+  PASS  Student অন্যের পাসওয়ার্ড বদলাতে পারে না
+  PASS  Admin পাসওয়ার্ড রিসেট
+  PASS  Admin: নতুন শিক্ষক
+  PASS  নতুন শিক্ষক শুধু দশম দেখে
+  PASS  Admin: শিক্ষক মুছা
+  PASS  Admin: পরীক্ষা মুছা
+
+=== ফলাফল ===
+সব ঠিক আছে (API যাচাই: 27 টি).
